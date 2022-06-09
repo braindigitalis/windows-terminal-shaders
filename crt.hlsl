@@ -10,13 +10,14 @@ cbuffer PixelShaderSettings {
 };
 
 // Settings
-#define GRAIN_INTENSITY 0.02
-#define TINT_COLOR float4(1, 0.7f, 0, 0)
+#define GRAIN_INTENSITY 0.003
+#define TINT_COLOR float4(0, 0.95f, 0, 0)
 #define ENABLE_SCANLINES 1
 #define ENABLE_REFRESHLINE 1
 #define ENABLE_NOISE 1
 #define ENABLE_CURVE 1
-#define ENABLE_TINT 0
+#define ENABLE_TINT 1
+#define ENABLE_GRAIN 1
 #define DEBUG 0
 
 // Grain Lookup Table
@@ -48,18 +49,22 @@ float4 mainImage(float2 tex) : TARGET
 	#if ENABLE_CURVE
 	// TODO: add control variable for transform intensity
 	xy -= 0.5f;				// offcenter screen
-	float r = xy.x * xy.x + xy.y * xy.y; 	// get ratio
+	// FIXED: 0.26f ratio applied, less obvious distortion
+	float r = (xy.x * xy.x + xy.y * xy.y) * 0.265; 	// get ratio
 	xy *= 4.2f + r;				// apply ratio
 	xy *= 0.25f;				// zoom
+	xy.x *= 0.965f;			// FIXED: X axis correction for selection
+	xy.y *= 0.93f;			// FIXED: Y axis correction for selection
 	xy += 0.5f;				// move back to center
 
 	// TODO: add monitor visuals and make colors static consts
+	// FIXED: Outer box and bezel incompatible with Y axis selection
 	// Outter Box
-	if(xy.x < -0.025f || xy.y < -0.025f) return float4(0, 0, 0, 0); 
-	if(xy.x > 1.025f  || xy.y > 1.025f)  return float4(0, 0, 0, 0); 
+	//if(xy.x < -0.025f || xy.y < -0.025f) return float4(0, 0, 0, 0); 
+	//if(xy.x > 1.025f  || xy.y > 1.025f)  return float4(0, 0, 0, 0); 
 	// Bazel
-	if(xy.x < -0.015f || xy.y < -0.015f) return float4(0.03f, 0.03f, 0.03f, 0.0f);
-	if(xy.x > 1.015f  || xy.y > 1.015f)  return float4(0.03f, 0.03f, 0.03f, 0.0f);
+	//if(xy.x < -0.015f || xy.y < -0.015f) return float4(0.03f, 0.03f, 0.03f, 0.0f);
+	//if(xy.x > 1.015f  || xy.y > 1.015f)  return float4(0.03f, 0.03f, 0.03f, 0.0f);
 	// Screen Border
 	if(xy.x < 0.001f  || xy.y < 0.001f)  return float4(0.0f, 0.0f, 0.0f, 0.0f);
 	if(xy.x > 0.999f  || xy.y > 0.999f)  return float4(0.0f, 0.0f, 0.0f, 0.0f);
