@@ -11,7 +11,10 @@ cbuffer PixelShaderSettings {
 
 // Settings
 #define GRAIN_INTENSITY 0.003
-#define TINT_COLOR float4(0, 0.95f, 0, 0)
+// Amber
+#define TINT_COLOR float4(1, 0.77f, 0, 0)
+// Green
+//#define TINT_COLOR float4(0, 0.87f, 0, 0)
 #define ENABLE_SCANLINES 1
 #define ENABLE_REFRESHLINE 1
 #define ENABLE_NOISE 1

@@ -1,0 +1,10 @@
+as=!git config --list | grep ^alias\. | cut -c 7- | grep -Ei --color "$1" #
+fetchout=!sh -c 'git fetch && git checkout $1'
+fo=fetchout
+history=log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --date=relative --date-order --date=default
+b=branch -vv
+c=commit
+p=push
+co=checkout
+l=log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --date=relative --date-order --date=default
+m=merge
